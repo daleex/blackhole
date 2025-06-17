@@ -1,0 +1,10 @@
+.canvasContainer {
+  position: fixed; /* <--- Aggiunto */
+  top: 0;           /* <--- Aggiunto */
+  left: 0;          /* <--- Aggiunto */
+  width: 100vw;
+  height: 100vh;
+  background-color: #050505;
+  overflow: hidden;
+  z-index: 9999;    /* <--- Altissimo per coprire tutto */
+}

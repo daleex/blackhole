@@ -1,0 +1,26 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: black;
+  overflow: hidden;
+}
+
+.stars {
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  
+  /* Centriamo contenuti dentro */
+  display: flex;
+  justify-content: center; /* orizzontalmente */
+  align-items: center;     /* verticalmente */
+  overflow: hidden;
+}
+
+/* Assicuriamo che il canvas occupi tutto lo spazio */
+canvas {
+  display: block;
+  width: 100vw !important;
+  height: 100vh !important;
+}
