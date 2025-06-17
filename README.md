@@ -1,12 +1,63 @@
-# React + Vite
+# Black Hole
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive visualization of a black hole and supernova, built with React, Three.js, and @react-three/fiber.
 
-Currently, two official plugins are available:
+## Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Prerequisites
 
-## Expanding the ESLint configuration
+- [Node.js](https://nodejs.org/) (version 16 or higher recommended)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Installation
+
+1. Clone this repository:
+   ```sh
+   git clone https://github.com/daleex/black-hole.git
+   cd black-hole
+   ```
+
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+
+### Running the Development Server
+
+Start the local development server with:
+
+```sh
+npm run dev
+```
+
+Then open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### Building for Production
+
+To build the project for production:
+
+```sh
+npm run build
+```
+
+The output will be in the `dist` folder.
+
+### Previewing the Production Build
+
+To preview the production build locally:
+
+```sh
+npm run preview
+```
+
+---
+
+## Project Structure
+
+- `src/` - Source code (React components, styles)
+- `index.html` - Main HTML file
+- `package.json` - Project configuration and dependencies
+
+## License
+
+MIT
