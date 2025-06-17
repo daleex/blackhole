@@ -4,7 +4,8 @@ import { OrbitControls, Stars } from '@react-three/drei';
 import * as THREE from 'three';
 import styles from '../styles/Black_Hole.module.css';
 import LightRays from './LightRays';
-import ZoomText from './ZoomText'; // aggiungi questo in alto
+import ZoomText from './ZoomText';
+import GlowHalo from './GlowHalo';
 
 
 function Scene() {
@@ -22,17 +23,20 @@ function Scene() {
       <hemisphereLight skyColor="#87CEEB" groundColor="#444444" intensity={0.5} />
       <pointLight position={[10, 15, 10]} intensity={0.8} color="#ffffff" castShadow />
 
-      <mesh position={[0, 0, 0]}>
+      {/* Glow halo behind black hole */}
+      <GlowHalo innerRadius={1.4} outerRadius={1.6} color="#ffffff" />
+
+      <mesh position={[0, 0, 0]} renderOrder={10}>
         <sphereGeometry args={[1, 64, 64]} />
-        <meshBasicMaterial color="black" side={THREE.DoubleSide}/>
+        <meshBasicMaterial color="black" side={THREE.DoubleSide} toneMapped={false} />
       </mesh>
 
       <LightRays />
       <Stars radius={0} depth={300} count={10000} factor={4} saturation={0} fade speed={1} />
-
     </>
   );
 }
+
 
 function ControlledOrbitControls({ distance, onDistanceChange }) {
   const controlsRef = useRef();
@@ -78,14 +82,14 @@ function ControlledOrbitControls({ distance, onDistanceChange }) {
       ref={controlsRef}
       zoomSpeed={zoomSpeed}
       minDistance={
-        distance > 10 && distance <= 20
+        distance > 20 && distance <= 30
           ? distance
           : 1
       }
       maxDistance={
-        distance > 10 && distance <= 20
+        distance > 20 && distance <= 30
           ? distance
-          : (distance <= 7 || distance >= 600 ? distance : 1000)
+          : (distance <= 19 || distance >= 700 ? distance : 1000)
       }
     />
   );

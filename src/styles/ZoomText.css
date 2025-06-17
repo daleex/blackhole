@@ -15,7 +15,7 @@
   text-shadow: 0 0 5px black;
 }
 
-/* Esempio: testo centrato */
+/* Centered narrative for special case */
 .centered {
   left: 50%;
   bottom: 50%;
@@ -23,14 +23,105 @@
   text-align: center;
 }
 
-/* Esempio: testo allineato a destra */
+/* Optional right alignment */
 .right {
   left: auto;
   right: 10px;
   text-align: right;
 }
 
-/* Esempio: colore diverso */
+/* Alternate color */
 .red-text {
   color: #ff4c4c;
+}
+
+/* CTA buttons */
+.buttons {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.buttons button {
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 4px;
+  background-color: #111;
+  color: #0f0;
+  border: 1px solid #0f0;
+  font-family: monospace;
+  cursor: pointer;
+  box-shadow: 0 0 5px #0f0;
+  transition: all 0.2s ease-in-out;
+}
+
+.buttons button:hover {
+  background-color: #0f0;
+  color: #000;
+  box-shadow: 0 0 15px #0f0, 0 0 30px #0f0;
+  transform: scale(1.05);
+}
+
+/* Terminal-style message */
+.terminal-message {
+  font-family: monospace;
+  color: #0f0;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.terminal-line {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.prompt {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 🌐 Mobile Responsive Overrides */
+@media (max-width: 600px) {
+  .zoom-text {
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    font-size: 18px;
+    padding: 8px;
+    width: 90%;
+    max-width: 100%;
+    border-radius: 10px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .buttons button {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .terminal-line {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .prompt {
+    margin-bottom: 2px;
+  }
 }
