@@ -97,7 +97,7 @@ function ZoomText({ distance, setDistance }) {
             }}
           >
             <button
-              onClick={() => setDistance(600)}
+              onClick={() => setDistance(700)}
               style={{
                 padding: '10px 20px',
                 fontSize: '18px',
