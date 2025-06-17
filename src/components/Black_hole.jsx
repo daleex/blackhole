@@ -41,58 +41,124 @@ function Scene() {
 function ControlledOrbitControls({ distance, onDistanceChange }) {
   const controlsRef = useRef();
   const { camera, gl } = useThree();
+  const [isMobile, setIsMobile] = useState(false);
 
-  const zoomSpeed = distance > 300 
-    ? 0.06
-    : distance > 100  
-      ? 0.18
-      : 0.4;
+  // Detect mobile once
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
+  // Smooth zoom target state for mobile
+  const targetDistanceRef = useRef(distance);
+
+  // Sync camera position with distance (desktop and initial load)
   useEffect(() => {
     camera.position.set(0, 0, distance);
     camera.updateProjectionMatrix();
-    controlsRef.current?.target.set(0, 0, 0);
-    controlsRef.current?.update();
-  }, [distance]);
 
-  // Touch swipe to zoom
+    if (controlsRef.current) {
+      controlsRef.current.target.set(0, 0, 0);
+      controlsRef.current.update();
+    }
+    targetDistanceRef.current = distance;
+  }, [distance, camera]);
+
+  // Desktop behavior: update distance on orbit changes
   useEffect(() => {
+    if (!controlsRef.current || isMobile) return;
+
+    const controls = controlsRef.current;
+
+    const onChange = () => {
+      const newDistance = camera.position.distanceTo(controls.target);
+      onDistanceChange(newDistance);
+    };
+
+    controls.addEventListener('change', onChange);
+    return () => controls.removeEventListener('change', onChange);
+  }, [camera, onDistanceChange, isMobile]);
+
+  // Mobile swipe zoom with easing animation
+  useEffect(() => {
+    if (!isMobile) return;
+
     let startY = null;
+    const canvas = gl.domElement;
 
     const onTouchStart = (e) => {
-      if (e.touches.length === 1) {
-        startY = e.touches[0].clientY;
-      }
+      if (e.touches.length === 1) startY = e.touches[0].clientY;
     };
 
     const onTouchMove = (e) => {
       if (startY === null || e.touches.length !== 1) return;
 
       const deltaY = e.touches[0].clientY - startY;
-      const zoomChange = deltaY * 0.5; // adjust this sensitivity
-      const newDistance = Math.min(Math.max(distance + zoomChange, 5), 1000);
+      const zoomDelta = deltaY * 0.8; // increase sensitivity for smoother zoom
 
-      onDistanceChange(newDistance);
+      // Update target distance (clamp)
+      targetDistanceRef.current = THREE.MathUtils.clamp(
+        targetDistanceRef.current + zoomDelta,
+        5,
+        1000
+      );
+
       startY = e.touches[0].clientY;
     };
 
-    const canvas = gl.domElement;
     canvas.addEventListener('touchstart', onTouchStart, { passive: true });
     canvas.addEventListener('touchmove', onTouchMove, { passive: true });
+
+    // Animate camera zoom smoothly towards targetDistanceRef.current
+    let frameId;
+    const animate = () => {
+      // Smoothly interpolate distance towards target
+      const currentDist = camera.position.length();
+      const targetDist = targetDistanceRef.current;
+      const lerpFactor = 0.1; // tweak for smoothness, smaller = slower
+
+      if (Math.abs(currentDist - targetDist) > 0.01) {
+        const newDist = THREE.MathUtils.lerp(currentDist, targetDist, lerpFactor);
+        camera.position.set(0, 0, newDist);
+        camera.updateProjectionMatrix();
+
+        if (controlsRef.current) {
+          controlsRef.current.update();
+        }
+        onDistanceChange(newDist);
+      }
+
+      frameId = requestAnimationFrame(animate);
+    };
+
+    animate();
 
     return () => {
       canvas.removeEventListener('touchstart', onTouchStart);
       canvas.removeEventListener('touchmove', onTouchMove);
+      cancelAnimationFrame(frameId);
     };
-  }, [distance, onDistanceChange, gl.domElement]);
+  }, [isMobile, camera, gl.domElement, onDistanceChange]);
+
+  // Custom zoom speed based on distance (for desktop)
+  const zoomSpeed =
+    distance > 300 ? 0.06 :
+    distance > 100 ? 0.18 : 0.4;
 
   return (
     <OrbitControls
       ref={controlsRef}
       zoomSpeed={zoomSpeed}
-      enableRotate={!(window.innerWidth < 768)} // disable orbiting on mobile
+      enableRotate={!isMobile}
       enablePan={false}
-      enableZoom={false} // We'll handle zoom manually
+      enableZoom={!isMobile} // disable pinch zoom if you want
+      minDistance={
+        distance > 20 && distance <= 30 ? distance : 1
+      }
+      maxDistance={
+        distance > 20 && distance <= 30
+          ? distance
+          : (distance <= 19 || distance >= 700 ? distance : 1000)
+      }
     />
   );
 }
