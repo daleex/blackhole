@@ -40,60 +40,63 @@ function Scene() {
 
 function ControlledOrbitControls({ distance, onDistanceChange }) {
   const controlsRef = useRef();
-  const { camera } = useThree();
+  const { camera, gl } = useThree();
 
-  // Dynamically set zoomSpeed: slower when far, faster when close
-  // You can tweak these values to your liking
   const zoomSpeed = distance > 300 
-    ? 0.06            // slow zoom far away
+    ? 0.06
     : distance > 100  
-      ? 0.18          // medium speed mid range
-      : 0.4;         // fast zoom when very close
+      ? 0.18
+      : 0.4;
 
   useEffect(() => {
     camera.position.set(0, 0, distance);
     camera.updateProjectionMatrix();
+    controlsRef.current?.target.set(0, 0, 0);
+    controlsRef.current?.update();
+  }, [distance]);
 
-    if (controlsRef.current) {
-      controlsRef.current.target.set(0, 0, 0);
-      controlsRef.current.update();
-    }
-  }, [distance, camera]);
-
+  // Touch swipe to zoom
   useEffect(() => {
-    if (!controlsRef.current) return;
+    let startY = null;
 
-    const controls = controlsRef.current;
-
-    const onChange = () => {
-      const newDistance = camera.position.distanceTo(controls.target);
-      onDistanceChange(newDistance);
+    const onTouchStart = (e) => {
+      if (e.touches.length === 1) {
+        startY = e.touches[0].clientY;
+      }
     };
 
-    controls.addEventListener('change', onChange);
+    const onTouchMove = (e) => {
+      if (startY === null || e.touches.length !== 1) return;
+
+      const deltaY = e.touches[0].clientY - startY;
+      const zoomChange = deltaY * 0.5; // adjust this sensitivity
+      const newDistance = Math.min(Math.max(distance + zoomChange, 5), 1000);
+
+      onDistanceChange(newDistance);
+      startY = e.touches[0].clientY;
+    };
+
+    const canvas = gl.domElement;
+    canvas.addEventListener('touchstart', onTouchStart, { passive: true });
+    canvas.addEventListener('touchmove', onTouchMove, { passive: true });
 
     return () => {
-      controls.removeEventListener('change', onChange);
+      canvas.removeEventListener('touchstart', onTouchStart);
+      canvas.removeEventListener('touchmove', onTouchMove);
     };
-  }, [camera, onDistanceChange]);
+  }, [distance, onDistanceChange, gl.domElement]);
 
   return (
     <OrbitControls
       ref={controlsRef}
       zoomSpeed={zoomSpeed}
-      minDistance={
-        distance > 20 && distance <= 30
-          ? distance
-          : 1
-      }
-      maxDistance={
-        distance > 20 && distance <= 30
-          ? distance
-          : (distance <= 19 || distance >= 700 ? distance : 1000)
-      }
+      enableRotate={!(window.innerWidth < 768)} // disable orbiting on mobile
+      enablePan={false}
+      enableZoom={false} // We'll handle zoom manually
     />
   );
 }
+
 
 
 function Black_hole() {
