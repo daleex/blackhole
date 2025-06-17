@@ -1,13 +1,14 @@
 .zoom-text {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
+  bottom: 0;
+  left: 0;
   pointer-events: none;
   user-select: none;
   font-family: Arial, sans-serif;
   max-width: 700px;
   background-color: rgba(0, 0, 0, 0.6);
   padding: 10px;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); /* Key fix */
   border-radius: 8px;
   color: white;
   font-size: 30px;
@@ -95,15 +96,13 @@
 @media (max-width: 600px) {
   .zoom-text {
     left: 50%;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); /* Avoid overlap */
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 40px);
     transform: translateX(-50%);
     font-size: 18px;
-    padding: 8px;
-    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); /* Extra internal space */
-    width: 90%;
-    max-width: 100%;
-    border-radius: 10px;
     line-height: 1.5;
+    padding: 12px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+    width: 90%;
     text-align: center;
   }
 
