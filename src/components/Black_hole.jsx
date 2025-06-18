@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useEffect,  useState  } from 'react';
+import React, { Suspense, useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 import * as THREE from 'three';
@@ -6,7 +6,6 @@ import styles from '../styles/Black_Hole.module.css';
 import LightRays from './LightRays';
 import ZoomText from './ZoomText';
 import GlowHalo from './GlowHalo';
-
 
 function Scene() {
   const diskRef = useRef();
@@ -22,8 +21,6 @@ function Scene() {
       <ambientLight intensity={0.2} />
       <hemisphereLight skyColor="#87CEEB" groundColor="#444444" intensity={0.5} />
       <pointLight position={[10, 15, 10]} intensity={0.8} color="#ffffff" castShadow />
-
-      {/* Glow halo behind black hole */}
       <GlowHalo innerRadius={1.4} outerRadius={1.6} color="#ffffff" />
 
       <mesh position={[0, 0, 0]} renderOrder={10}>
@@ -37,25 +34,19 @@ function Scene() {
   );
 }
 
-
-function ControlledOrbitControls({ distance, onDistanceChange }) {
+function ControlledOrbitControls({ distance, onDistanceChange, ctaActive }) {
   const controlsRef = useRef();
   const { camera, gl } = useThree();
   const [isMobile, setIsMobile] = useState(false);
+  const targetDistanceRef = useRef(distance);
 
-  // Detect mobile once
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
   }, []);
 
-  // Smooth zoom target state for mobile
-  const targetDistanceRef = useRef(distance);
-
-  // Sync camera position with distance (desktop and initial load)
   useEffect(() => {
     camera.position.set(0, 0, distance);
     camera.updateProjectionMatrix();
-
     if (controlsRef.current) {
       controlsRef.current.target.set(0, 0, 0);
       controlsRef.current.update();
@@ -63,12 +54,10 @@ function ControlledOrbitControls({ distance, onDistanceChange }) {
     targetDistanceRef.current = distance;
   }, [distance, camera]);
 
-  // Desktop behavior: update distance on orbit changes
   useEffect(() => {
     if (!controlsRef.current || isMobile) return;
 
     const controls = controlsRef.current;
-
     const onChange = () => {
       const newDistance = camera.position.distanceTo(controls.target);
       onDistanceChange(newDistance);
@@ -78,7 +67,6 @@ function ControlledOrbitControls({ distance, onDistanceChange }) {
     return () => controls.removeEventListener('change', onChange);
   }, [camera, onDistanceChange, isMobile]);
 
-  // Mobile swipe zoom with easing animation
   useEffect(() => {
     if (!isMobile) return;
 
@@ -86,19 +74,36 @@ function ControlledOrbitControls({ distance, onDistanceChange }) {
     const canvas = gl.domElement;
 
     const onTouchStart = (e) => {
+      if (ctaActive) return;
       if (e.touches.length === 1) startY = e.touches[0].clientY;
     };
 
     const onTouchMove = (e) => {
+      if (ctaActive) return;
       if (startY === null || e.touches.length !== 1) return;
 
       const deltaY = e.touches[0].clientY - startY;
-      const zoomDelta = deltaY * 0.8; // increase sensitivity for smoother zoom
+      const scaleFactor =
+        targetDistanceRef.current > 20
+          ? 0.4
+          : targetDistanceRef.current > 10
+          ? 0.1
+          : targetDistanceRef.current > 3
+          ? 0.05
+          : 0.02; // ultra slow zoom very close to zero
 
-      // Update target distance (clamp)
+      let zoomDelta = deltaY * scaleFactor;
+
+
+      // Prevent zooming out once CTA is triggered
+      const closeThreshold = 100;
+      if (targetDistanceRef.current <= closeThreshold && zoomDelta > 0) {
+        zoomDelta = 0;
+      }
+
       targetDistanceRef.current = THREE.MathUtils.clamp(
         targetDistanceRef.current + zoomDelta,
-        5,
+        0,
         1000
       );
 
@@ -108,22 +113,17 @@ function ControlledOrbitControls({ distance, onDistanceChange }) {
     canvas.addEventListener('touchstart', onTouchStart, { passive: true });
     canvas.addEventListener('touchmove', onTouchMove, { passive: true });
 
-    // Animate camera zoom smoothly towards targetDistanceRef.current
     let frameId;
     const animate = () => {
-      // Smoothly interpolate distance towards target
       const currentDist = camera.position.length();
       const targetDist = targetDistanceRef.current;
-      const lerpFactor = 0.1; // tweak for smoothness, smaller = slower
+      const lerpFactor = 0.1;
 
       if (Math.abs(currentDist - targetDist) > 0.01) {
         const newDist = THREE.MathUtils.lerp(currentDist, targetDist, lerpFactor);
         camera.position.set(0, 0, newDist);
         camera.updateProjectionMatrix();
-
-        if (controlsRef.current) {
-          controlsRef.current.update();
-        }
+        if (controlsRef.current) controlsRef.current.update();
         onDistanceChange(newDist);
       }
 
@@ -137,12 +137,13 @@ function ControlledOrbitControls({ distance, onDistanceChange }) {
       canvas.removeEventListener('touchmove', onTouchMove);
       cancelAnimationFrame(frameId);
     };
-  }, [isMobile, camera, gl.domElement, onDistanceChange]);
+  }, [isMobile, camera, gl.domElement, onDistanceChange, ctaActive]);
 
-  // Custom zoom speed based on distance (for desktop)
   const zoomSpeed =
-    distance > 300 ? 0.06 :
-    distance > 100 ? 0.18 : 0.4;
+  distance > 100 ? 0.05 :
+  distance > 20 ? 0.18 : 
+  0.2;    
+
 
   return (
     <OrbitControls
@@ -150,33 +151,40 @@ function ControlledOrbitControls({ distance, onDistanceChange }) {
       zoomSpeed={zoomSpeed}
       enableRotate={!isMobile}
       enablePan={false}
-      enableZoom={!isMobile} // disable pinch zoom if you want
-      minDistance={
-        distance > 20 && distance <= 30 ? distance : 1
-      }
+      enableZoom={!isMobile}
+      minDistance={distance > 20 && distance <= 30 ? distance : 1}
       maxDistance={
         distance > 20 && distance <= 30
           ? distance
-          : (distance <= 19 || distance >= 700 ? distance : 1000)
+          : distance <= 19 || distance >= 700
+          ? distance
+          : 1000
       }
     />
   );
 }
 
-
-
 function Black_hole() {
   const [distance, setDistance] = useState(700);
+  const [ctaActive, setCtaActive] = useState(false);
 
   return (
     <div className={styles.canvasContainer}>
-      <Canvas shadows camera={{ position: [0, 0, 600], fov: 50, near: 0.01}}>
+      <Canvas shadows camera={{ position: [0, 0, 600], fov: 50, near: 0.01 }}>
         <Suspense fallback={null}>
           <Scene />
         </Suspense>
-        <ControlledOrbitControls distance={distance} onDistanceChange={setDistance} />
+        <ControlledOrbitControls
+          distance={distance}
+          onDistanceChange={setDistance}
+          ctaActive={ctaActive}
+        />
       </Canvas>
-      <ZoomText distance={distance} setDistance={setDistance} />
+      <ZoomText
+        distance={distance}
+        setDistance={setDistance}
+        setCtaActive={setCtaActive}
+      />
     </div>
   );
 }

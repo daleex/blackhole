@@ -22,10 +22,11 @@
   { "min": 30,  "text": "Ma cosa succede se entriamo dentro l’orizzonte degli eventi?" },
   { "min": 20,  "text": null, "class": "centered terminal-style" },
   { "min": 18,  "text": "Dal nostro punto di vista, potremmo superare l’orizzonte senza accorgercene..." },
-  { "min": 5,   "text": "Nessuna informazione potrebbe tornare indietro..." },
-  { "min": 4,   "text": "La gravità dentro un buco nero è così intensa che la materia viene stirata in lunghe forme sottili, come spaghetti. Per questo gli scienziati chiamano questo fenomeno “spaghettificazione”. La materia viene spezzata, distrutta e... scompare." },
-  { "min": 3,   "text": "Che cosa c’è al centro di un buco nero?" },
-  { "min": 2,   "text": "La teoria più accettata dice che c’è una singolarità: un punto minuscolo dove la densità è infinita e il tempo e lo spazio si comportano in modi che ancora non comprendiamo." },
-  { "min": 1,   "text": "Ma forse la singolarità non è davvero un punto. Forse c’è qualcosa di diverso, qualcosa che ancora non conosciamo. Forse è una porta per altri luoghi, per altri universi. Nessuno lo sa per certo." },
-  { "min": 0,   "text": "I buchi neri ci sfidano a comprendere l’universo. Ci raccontano di stelle morte, ma anche di nascita di conoscenza. Guardare dentro di loro è guardare oltre i limiti della scienza. È guardare noi stessi." }
+  { "min": 15,   "text": "Nessuna informazione potrebbe tornare indietro..." },
+  { "min": 12,   "text": "La gravità dentro un buco nero è così intensa che la materia viene stirata in lunghe forme sottili, come spaghetti. Per questo gli scienziati chiamano questo fenomeno “spaghettificazione”. La materia viene spezzata, distrutta e... scompare." },
+  { "min": 8,   "text": "Che cosa c’è al centro di un buco nero?" },
+  { "min": 4,   "text": "La teoria più accettata dice che c’è una singolarità: un punto minuscolo dove la densità è infinita e il tempo e lo spazio si comportano in modi che ancora non comprendiamo." },
+  { "min": 2,   "text": "Ma forse la singolarità non è davvero un punto. Forse c’è qualcosa di diverso, qualcosa che ancora non conosciamo. Forse è una porta per altri luoghi, per altri universi. Nessuno lo sa per certo." },
+  { "min": 1,   "text": "I buchi neri ci sfidano a comprendere l’universo. Ci raccontano di stelle morte, ma anche di nascita di conoscenza. Guardare dentro di loro è guardare oltre i limiti della scienza. È guardare noi stessi." },
+  { "min": 0,   "text": "Fine." }
 ]
