@@ -140,42 +140,41 @@ function ControlledOrbitControls({ distance, onDistanceChange, ctaActive }) {
   }, [isMobile, camera, gl.domElement, onDistanceChange, ctaActive]);
 
   const zoomSpeed =
-    distance > 600 ? 0.01 :
-    distance > 500 ? 0.015 :
-    distance > 400 ? 0.02 :
-    distance > 300 ? 0.025 :
-    distance > 200 ? 0.035 :
-    distance > 100 ? 0.05 :
-    distance > 50  ? 0.075 :
+    distance > 600 ? 0.1 :
+    //distance > 500 ? 0.015 :
+    //distance > 400 ? 0.02 :
+   // distance > 300 ? 0.025 :
+   // distance > 200 ? 0.035 :
+    distance > 100 ? 0.2 :
+    //distance > 50  ? 0.075 :
     0.1;
 
 
-  return (
-    <OrbitControls
-      ref={controlsRef}
-      zoomSpeed={zoomSpeed}
-      enableRotate={!isMobile}
-      enablePan={false}
-      enableZoom={!isMobile}
-      minDistance={distance > 20 && distance <= 30 ? distance : 1}
-      maxDistance={
-        distance > 20 && distance <= 30
-          ? distance
-          : distance <= 19 || distance >= 700
-          ? distance
-          : 1000
-      }
-    />
-  );
+const isLockedZoom =
+  (distance == 20) || (distance < 20 || distance > 1000);
+
+return (
+  <OrbitControls
+    ref={controlsRef}
+    zoomSpeed={zoomSpeed}
+    enableRotate={!isMobile}
+    enablePan={false}
+    enableZoom={!isMobile}
+    minDistance={isLockedZoom ? distance : 1}
+    maxDistance={isLockedZoom ? distance : 1000}
+  />
+);
+
+
 }
 
 function Black_hole() {
-  const [distance, setDistance] = useState(700);
+  const [distance, setDistance] = useState(1000);
   const [ctaActive, setCtaActive] = useState(false);
 
   return (
     <div className={styles.canvasContainer}>
-      <Canvas shadows camera={{ position: [0, 0, 600], fov: 50, near: 0.01 }}>
+      <Canvas shadows camera={{ position: [0, 0, 1000], fov: 50, near: 0.01 }}>
         <Suspense fallback={null}>
           <Scene />
         </Suspense>

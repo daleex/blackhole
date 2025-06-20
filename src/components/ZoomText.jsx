@@ -7,23 +7,28 @@ function ZoomText({ distance, setDistance, setCtaActive }) {
   const [message, setMessage] = useState('');
   const [textClass, setTextClass] = useState('');
 
-  useEffect(() => {
-    const matched = messagesData.find(entry => distance > entry.min);
+useEffect(() => {
+  const roundedDistance = Math.round(distance);
 
-    if (matched) {
-      setMessage(matched.text);
-      setTextClass(matched.class || '');
-      if (typeof matched.text !== 'string') {
-        setCtaActive(true); // ✅ Activate CTA when showing non-string content
-      } else {
-        setCtaActive(false); // ✅ Reset CTA if we’re not in CTA anymore
-      }
-    } else {
-      setMessage('');
-      setTextClass('');
-      setCtaActive(false);
-    }
-  }, [distance, setCtaActive]);
+  const matched = messagesData.find(
+    entry => roundedDistance >= entry.min && roundedDistance <= entry.max
+  );
+
+  if (matched) {
+    setMessage(matched.text);
+    setTextClass(matched.class || '');
+
+    // Activate CTA only if in exact distance 20 range
+    const isCtaRange = matched.min === 20 && matched.max === 20;
+    setCtaActive(isCtaRange);
+  } else {
+    setMessage('');
+    setTextClass('');
+    setCtaActive(false);
+  }
+}, [distance, setCtaActive]);
+
+
 
   return (
     <div className={`zoom-text ${textClass}`}>
@@ -36,16 +41,19 @@ function ZoomText({ distance, setDistance, setCtaActive }) {
             speed={20}
           />
           <div className="buttons">
-            <button onClick={() => {
-              setDistance(700);
-              setCtaActive(false); // ✅ Reactivate zoom out
-            }}>
+            <button
+              onClick={() => {
+                setDistance(1000); // Go back
+                setCtaActive(false);
+              }}
+            >
               Torna indietro
             </button>
-            <button onClick={() => {
-              setDistance(19);
-              // ctaActive stays true to lock zoom out
-            }}>
+            <button
+              onClick={() => {
+                setDistance(19); // Continue
+              }}
+            >
               Continua
             </button>
           </div>
