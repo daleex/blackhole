@@ -150,20 +150,22 @@ function ControlledOrbitControls({ distance, onDistanceChange, ctaActive }) {
     0.1;
 
 
-const isLockedZoom =
-  (distance == 20) || (distance < 20 || distance > 1000);
+    const isLockedZoom = ctaActive;
 
-return (
-  <OrbitControls
-    ref={controlsRef}
-    zoomSpeed={zoomSpeed}
-    enableRotate={!isMobile}
-    enablePan={false}
-    enableZoom={!isMobile}
-    minDistance={isLockedZoom ? distance : 1}
-    maxDistance={isLockedZoom ? distance : 1000}
-  />
-);
+    const maxAllowedDistance = distance < 20 ? distance : 1000;
+
+
+    return (
+      <OrbitControls
+      ref={controlsRef}
+      zoomSpeed={zoomSpeed}
+      enableRotate={!isMobile}
+      enablePan={false}
+      enableZoom={!isMobile}
+      minDistance={isLockedZoom ? distance : 1}
+      maxDistance={isLockedZoom ? distance : maxAllowedDistance}
+    />
+    );
 
 
 }
