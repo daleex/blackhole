@@ -140,9 +140,14 @@ function ControlledOrbitControls({ distance, onDistanceChange, ctaActive }) {
   }, [isMobile, camera, gl.domElement, onDistanceChange, ctaActive]);
 
   const zoomSpeed =
-  distance > 100 ? 0.05 :
-  distance > 20 ? 0.18 : 
-  0.2;    
+    distance > 600 ? 0.01 :
+    distance > 500 ? 0.015 :
+    distance > 400 ? 0.02 :
+    distance > 300 ? 0.025 :
+    distance > 200 ? 0.035 :
+    distance > 100 ? 0.05 :
+    distance > 50  ? 0.075 :
+    0.1;
 
 
   return (
