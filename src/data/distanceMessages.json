@@ -17,17 +17,20 @@
   { "min": 300, "max": 329, "text": "Puoi scoprirlo osservando l'ambiente intorno: se vedi una stella muoversi in modo strano, come se fosse attratta da qualcosa di invisibile, è un indizio." },
   { "min": 250, "max": 279, "text": "Puoi individuare un buco nero mentre osservi le stelle orbitare nel vuoto." },
   { "min": 200, "max": 229, "text": "O puoi notarlo attraverso la materia che si scalda mentre cade." },
+  { "min": 150, "max": 179, "text": "ATTENZIONE" },
+  { "min": 150, "max": 179, "text": "Ti stai avvicinando sempre di più alla parte più misteriosa del buco nero: l'orizzonte degli eventi." },
+  { "min": 100, "max": 129, "text": "L’orizzonte degli eventi è un confine invisibile che stai per attraversare. Superato quel punto, nulla può più uscire, nemmeno la luce, nemmeno un segnale, nemmeno una navicella spaziale. Per questo lo chiamano ''punto di non ritorno''." },
+  { "min": 60,  "max": 79,  "text": "Se ti avvicinassi troppo a questo confine, da fuori sembrerebbe che tu rallenti sempre di più, come se il tempo per te andasse piano piano. La luce che mandi indietro diventerebbe sempre più debole e stirata, fino quasi a sparire." },
+  { "min": 30,  "max": 39,  "text": "Ma cosa succede se superi l'orizzonte degli eventi?" },
   
-  { "min": 150, "max": 179, "text": "E negli ultimi anni, abbiamo scoperto un nuovo modo per “sentire” i buchi neri..." },
-  { "min": 100, "max": 129, "text": "Adesso stiamo per avvicinarci alla parte più misteriosa del buco nero..." },
-  { "min": 60,  "max": 79,  "text": "L’orizzonte degli eventi è un confine invisibile..." },
-  { "min": 30,  "max": 39,  "text": "Ma cosa succede se entriamo dentro l’orizzonte degli eventi?" },
   { "min": 20,  "max": 20,  "text": {}, "class": "centered terminal-style" },
-  { "min": 18,  "max": 19,  "text": "Dal nostro punto di vista, potremmo superare l’orizzonte senza accorgercene..." },
-  { "min": 15,  "max": 17,  "text": "Nessuna informazione potrebbe tornare indietro..." },
-  { "min": 12,  "max": 14,  "text": "La gravità dentro un buco nero è così intensa che la materia viene stirata in lunghe forme sottili, come spaghetti. Per questo gli scienziati chiamano questo fenomeno “spaghettificazione”. La materia viene spezzata, distrutta e... scompare." },
-  { "min": 8,   "max": 11,  "text": "Che cosa c’è al centro di un buco nero?" },
-  { "min": 4,   "max": 7,   "text": "La teoria più accettata dice che c’è una singolarità: un punto minuscolo dove la densità è infinita e il tempo e lo spazio si comportano in modi che ancora non comprendiamo." },
-  { "min": 2,   "max": 3,   "text": "Ma forse la singolarità non è davvero un punto. Forse c’è qualcosa di diverso, qualcosa che ancora non conosciamo. Forse è una porta per altri luoghi, per altri universi. Nessuno lo sa per certo." },
-  { "min": 1,   "max": 1,   "text": "I buchi neri ci sfidano a comprendere l’universo. Ci raccontano di stelle morte, ma anche di nascita di conoscenza. Guardare dentro di loro è guardare oltre i limiti della scienza. È guardare noi stessi." }
+  
+  { "min": 18,  "max": 19,  "text": "Dal tuo punto di vista interno, potresti superare l'orizzonte senza accorgertene. Ma una volta dentro..." },
+  
+  { "min": 15,  "max": 17,  "text": "Nessuna informazione che tu possa mandare potrebbe tornare indietro. È come se tu uscissi dall'universo osservabile." },
+  { "min": 12,  "max": 14,  "text": "La gravità dentro un buco neroè così intensa che il tuo corpoviene stirato in lunghe forme sottili, come spaghetti. Per questo gliscienziati chiamano questo fenomeno che stai subendo ''spaghettificazion''. Vieni spezzato, distrutto e... scompari." },
+  { "min": 8,   "max": 11,  "text": "Che cosa trovi al centro di un buco nero?" },
+  { "min": 4,   "max": 7,   "text": "La teoria più accreditata dice che c’è una singolarità: un punto minuscolo dove la densità è infinita e il tempo e lo spazio si comportano in modi che ancora non comprendi." },
+  { "min": 2,   "max": 3,   "text": "Ma forse la singolarità che incontri non è davvero un punto. Forse trovi qualcosa di diverso, qualcosa che ancora non conosci. Forse è una porta per altri luoghi, per altri universi. Nè tu nè nessun altro può saperlo." },
+  { "min": 1,   "max": 1,   "text": "I buchi neri ti sfidano a comprendere l'universo. Ti raccontano di stelle morte, ma anche di nascita di conoscenza. Guardare dentro di loro è guardare oltre i limiti della scienza. È guardare te stesso." }
 ]
