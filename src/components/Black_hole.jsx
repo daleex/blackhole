@@ -7,8 +7,9 @@ import LightRays from './LightRays';
 import ZoomText from './ZoomText';
 import GlowHalo from './GlowHalo';
 
-function Scene() {
+function Scene({ distance }) {
   const diskRef = useRef();
+  console.log('Current distance:', distance);
 
   useFrame((state, delta) => {
     if (diskRef.current) {
@@ -28,11 +29,14 @@ function Scene() {
         <meshBasicMaterial color="black" side={THREE.DoubleSide} toneMapped={false} />
       </mesh>
 
-      <LightRays />
+      {/* Render LightRays only if distance <= threshold, e.g. 200 */}
+      {distance <= 20 && <LightRays />}
+
       <Stars radius={0} depth={300} count={10000} factor={4} saturation={0} fade speed={1} />
     </>
   );
 }
+
 
 function ControlledOrbitControls({ distance, onDistanceChange, ctaActive }) {
   const controlsRef = useRef();
@@ -173,18 +177,50 @@ function ControlledOrbitControls({ distance, onDistanceChange, ctaActive }) {
 function Black_hole() {
   const [distance, setDistance] = useState(1000);
   const [ctaActive, setCtaActive] = useState(false);
+  const containerRef = useRef();
+
+  useEffect(() => {
+    let frameId;
+
+    function animate(t) {
+      const threshold = 180;
+      const el = containerRef.current;
+      if (!el) return;
+
+      if (distance > threshold) {
+        // No shake if too far
+        el.style.transform = '';
+      } else {
+        // Intensity: from 0 (far) to 1 (close)
+        const intensity = 1 - Math.min(Math.max((distance - 1) / (threshold - 1), 0), 1);
+        const maxShake = 0.5; // pixels
+        const shakeStrength = intensity * maxShake;
+
+        // Oscillate using sin and cos for smooth wiggle
+        const offsetX = Math.sin(t / 50) * shakeStrength;
+        const offsetY = Math.cos(t / 60) * shakeStrength;
+
+        el.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      }
+      frameId = requestAnimationFrame(animate);
+    }
+
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  }, [distance]);
 
   return (
-    <div className={styles.canvasContainer}>
+    <div ref={containerRef} className={styles.canvasContainer}>
       <Canvas shadows camera={{ position: [0, 0, 1000], fov: 50, near: 0.01 }}>
         <Suspense fallback={null}>
-          <Scene />
+          <Scene distance={distance} />
         </Suspense>
         <ControlledOrbitControls
           distance={distance}
           onDistanceChange={setDistance}
           ctaActive={ctaActive}
         />
+        {/* Remove CameraShake here */}
       </Canvas>
       <ZoomText
         distance={distance}

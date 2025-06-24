@@ -1,9 +1,8 @@
-// src/components/LightRays.jsx
 import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const count = 5000; // Number of particles
+const count = 10000; // Number of particles
 const distance = 60; // How far out particles start
 
 function LightRays() {
@@ -24,38 +23,46 @@ function LightRays() {
     return positions;
   }, []);
 
-  useFrame((state, delta) => {
-    if (pointsRef.current) {
-      const positions = pointsRef.current.geometry.attributes.position.array;
-      const blackHoleRadius = 1.1; // A bit larger than the visual sphere
-      const pullStrength = 5.0; // How strongly particles are pulled
+useFrame((state, delta) => {
+  if (pointsRef.current) {
+    const positions = pointsRef.current.geometry.attributes.position.array;
+    const respawnThreshold = 2.5; // bigger than blackHoleRadius
+    const pullStrength = 5; // slower pull speed for smooth flow
+    const minRespawnRadius = distance;       // e.g. 60
+    const maxRespawnRadius = distance * 1.5; // e.g. 90
 
-      for (let i = 0; i < count; i++) {
-        const idx = i * 3;
-        const x = positions[idx];
-        const y = positions[idx + 1];
-        const z = positions[idx + 2];
+    for (let i = 0; i < count; i++) {
+      const idx = i * 3;
+      const x = positions[idx];
+      const y = positions[idx + 1];
+      const z = positions[idx + 2];
 
-        const currentDistSq = x * x + y * y + z * z;
+      const dist = Math.sqrt(x * x + y * y + z * z);
 
-        if (currentDistSq < blackHoleRadius * blackHoleRadius) {
-          const theta = Math.acos(THREE.MathUtils.randFloatSpread(2));
-          const phi = THREE.MathUtils.randFloatSpread(2 * Math.PI);
-          const r = distance * (1 + Math.random() * 0.5);
+      if (dist < respawnThreshold) {
+        // Respawn *before* they hit the black hole, so no gaps
+        const theta = Math.acos(THREE.MathUtils.randFloatSpread(2));
+        const phi = THREE.MathUtils.randFloat(0, 2 * Math.PI);
+        const r = THREE.MathUtils.randFloat(minRespawnRadius, maxRespawnRadius);
 
-          positions[idx] = r * Math.sin(theta) * Math.cos(phi);
-          positions[idx + 1] = r * Math.sin(theta) * Math.sin(phi);
-          positions[idx + 2] = r * Math.cos(theta);
-        } else {
-          const pullFactor = pullStrength * delta / Math.sqrt(currentDistSq);
-          positions[idx] -= x * pullFactor;
-          positions[idx + 1] -= y * pullFactor;
-          positions[idx + 2] -= z * pullFactor;
-        }
+        positions[idx] = r * Math.sin(theta) * Math.cos(phi);
+        positions[idx + 1] = r * Math.sin(theta) * Math.sin(phi);
+        positions[idx + 2] = r * Math.cos(theta);
+      } else {
+        // Pull stars toward black hole slowly for smooth flow
+        const pullFactor = pullStrength * delta / dist;
+        positions[idx] -= x * pullFactor;
+        positions[idx + 1] -= y * pullFactor;
+        positions[idx + 2] -= z * pullFactor;
       }
-      pointsRef.current.geometry.attributes.position.needsUpdate = true;
     }
-  });
+
+    pointsRef.current.geometry.attributes.position.needsUpdate = true;
+  }
+});
+
+
+
 
   return (
     <points ref={pointsRef}>

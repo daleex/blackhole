@@ -6,10 +6,8 @@
   user-select: none;
   font-family: 'Share Tech Mono', monospace, Arial, sans-serif;
   max-width: 700px;
-  background-color: rgba(0, 0, 0, 0.6);
   padding: 10px;
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); /* Key fix */
-  border-radius: 8px;
   color: white;
   font-size: 30px;
   line-height: 1.4;
@@ -51,13 +49,11 @@
   text-align: center;
 }
 
-/* Other existing styles below */
 .scroll-instruction {
   position: fixed;
-  top: 20px;
+  bottom: 20px; /* Changed from top to bottom */
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.75);
   color: white;
   padding: 10px 20px;
   border-radius: 12px;
@@ -65,6 +61,7 @@
   z-index: 999;
   text-align: center;
 }
+
 
 .instruction-banner {
   position: absolute;
@@ -137,6 +134,20 @@
   flex-wrap: wrap;
 }
 
+.terminal-warning {
+  background-color: rgba(0, 0, 0, 0.75);
+  border: 1px solid #0f0;
+  padding: 0;
+  border-radius: 10px;
+  font-family: 'Share Tech Mono', monospace, Arial, sans-serif;
+  color: #ffffff;
+  text-align: left;
+  white-space: pre-line;
+  margin: 0;
+  pointer-events: auto;
+}
+
+
 .prompt {
   white-space: nowrap;
   flex-shrink: 0;
@@ -147,7 +158,8 @@
   min-width: 0;
 }
 
-/* 🌐 Mobile Responsive Overrides */
+  
+/**/
 @media (max-width: 600px) {
   .zoom-text {
     left: 50%;
@@ -159,17 +171,13 @@
     width: 90%;
     max-width: 100%;
     text-align: center;
-    border-radius: 10px;
   }
 
-  /* Override positioning for mobile */
   .center,
   .centered,
-  .bottom-center,
-  .top-center,
-  .bottom-left {
+  .top-center {
     left: 50% !important;
-    bottom: 80px !important; /* keep bottom offset for visibility */
+    bottom: 80px !important;
     top: auto !important;
     transform: translateX(-50%) !important;
     text-align: center !important;
@@ -177,6 +185,29 @@
     max-width: 100%;
   }
 
+  .bottom-center {
+    left: 50% !important;
+    bottom: 20px !important;
+    transform: translateX(-50%) !important;
+    text-align: center !important;
+    width: 90%;
+    max-width: 100%;
+  }
+
+  .bottom-left {
+    left: 0 !important;
+    bottom: 20px !important;
+    transform: none !important;
+    text-align: left !important;
+    width: 90%;
+    max-width: 100%;
+    padding-left: 5%;
+  }
+
+
+
+
+/*buttons*/
   .buttons {
     flex-direction: column;
     align-items: center;
@@ -194,5 +225,77 @@
 
   .prompt {
     margin-bottom: 2px;
+  }
+}
+
+
+/*img*/
+.text-with-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  text-align: left;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Position Variants */
+.text-with-image.left {
+  flex-direction: row;
+  flex-wrap: nowrap
+}
+
+.text-with-image.right {
+  flex-direction: row-reverse;
+}
+
+.text-with-image.top {
+  flex-direction: column;
+}
+
+.text-with-image.bottom {
+  flex-direction: column-reverse;
+}
+
+/* Image Styling */
+.message-image {
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Responsive: tablets and smaller */
+@media screen and (max-width: 768px) {
+  .text-with-image {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .text-with-image.left,
+  .text-with-image.right {
+    flex-direction: column;
+  }
+
+  .message-image {
+    max-width: 160px;
+    max-height: 160px;
+  }
+}
+
+/* Responsive: phones */
+@media screen and (max-width: 480px) {
+  .text-with-image {
+    gap: 10px;
+    padding: 0 1rem;
+  }
+
+  .message-image {
+    max-width: 120px;
+    max-height: 120px;
   }
 }
