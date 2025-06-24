@@ -173,17 +173,26 @@
     text-align: center;
   }
 
-  .center,
-  .centered,
   .top-center {
     left: 50% !important;
-    bottom: 80px !important;
-    top: auto !important;
+    top: 20px !important;
+    bottom: auto !important;
     transform: translateX(-50%) !important;
     text-align: center !important;
     width: 90%;
     max-width: 100%;
   }
+
+  .center,
+  .centered {
+    left: 50% !important;
+    bottom: 50% !important;
+    transform: translate(-50%, 50%) !important;
+    text-align: center !important;
+    width: 90%;
+    max-width: 100%;
+  }
+
 
   .bottom-center {
     left: 50% !important;
