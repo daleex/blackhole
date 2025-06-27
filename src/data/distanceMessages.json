@@ -24,7 +24,7 @@
   { "min": 20, "max": 20, "text": {}, "class": "centered terminal-style" },
   { "min": 16, "max": 19, "text": "Dal tuo punto di vista interno, potresti superare l'orizzonte senza accorgertene. Ma una volta dentro...", "class": "bottom-left" },
   { "min": 11, "max": 14, "text": "Nessuna informazione che tu possa mandare potrebbe tornare indietro. È come se tu uscissi dall'universo osservabile.", "class": "bottom-left" },
-  { "min": 5, "max": 8, "text": "La gravità dentro un buco neroè così intensa che il tuo corpoviene stirato in lunghe forme sottili, come spaghetti. Per questo gliscienziati chiamano questo fenomeno che stai subendo ''spaghettificazion''. Vieni spezzato, distrutto e... scompari.", "class": "bottom-left" },
+  { "min": 5, "max": 8, "text": "La gravità dentro un buco nero è così intensa che il tuo corpo viene stirato in lunghe forme sottili, come spaghetti. Per questo gli scienziati chiamano questo fenomeno che stai subendo ''spaghettificazione''. Vieni spezzato, distrutto e... scompari.", "class": "bottom-left" },
   { "min": 4, "max": 4, "text": "Che cosa trovi al centro di un buco nero?", "class": "center", "image": "/blackhole/images/noun-astronaut-7840870.svg", "imagePosition": "top" },
   { "min": 3, "max": 3, "text": "La teoria più accreditata dice che c’è una singolarità: un punto minuscolo dove la densità è infinita e il tempo e lo spazio si comportano in modi che ancora non comprendi.", "class": "center" },
   { "min": 2, "max": 2, "text": "Ma forse la singolarità che incontri non è davvero un punto. Forse trovi qualcosa di diverso, qualcosa che ancora non conosci. Forse è una porta per altri luoghi, per altri universi. Nè tu nè nessun altro può saperlo.", "class": "center" },
