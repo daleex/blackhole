@@ -30,7 +30,7 @@ function Scene({ distance }) {
       </mesh>
 
       {/* Render LightRays only if distance <= threshold, e.g. 200 */}
-      <LightRays active={distance <= 20} />
+      <LightRays active={Math.floor(distance) <= 20} />
 
       <Stars radius={0} depth={300} count={10000} factor={4} saturation={0} fade speed={1} />
     </>
@@ -89,7 +89,7 @@ function ControlledOrbitControls({ distance, onDistanceChange, ctaActive }) {
       const deltaY = e.touches[0].clientY - startY;
       const scaleFactor =
         targetDistanceRef.current > 20
-          ? 0.4
+          ? 0.5
           : targetDistanceRef.current > 10
           ? 0.1
           : targetDistanceRef.current > 3
@@ -101,7 +101,7 @@ function ControlledOrbitControls({ distance, onDistanceChange, ctaActive }) {
 
       // Prevent zooming out once CTA is triggered
       const closeThreshold = 19;
-      if (targetDistanceRef.current <= closeThreshold && zoomDelta > 0) {
+      if (Math.floor(targetDistanceRef.current) <= closeThreshold && zoomDelta > 0) {
         zoomDelta = 0;
       }
 

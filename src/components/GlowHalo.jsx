@@ -10,7 +10,7 @@ function GlowHalo({ innerRadius = 1.4, outerRadius = 1.6, color = '#ffffff' }) {
     const t = clock.getElapsedTime();
     const pulse = Math.sin(t * 4) * 0.5 + 0.5; // normalize to [0, 1]
     const scale = 1 + pulse * 0.05; // subtle pulsing scale
-    const opacity = 0.5 + pulse * 0.5; // range from 0.2 to 0.5
+    const opacity = 0.25 + pulse * 0.25; // opacity ranges from 0.25 to 0.50
 
     if (meshRef.current) {
       meshRef.current.scale.set(scale, scale, scale);
