@@ -1,89 +1,76 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const count = 10000; // Number of particles
-const distance = 60; // How far out particles start
+const STAR_COUNT = 1000;
+const DEATH_RADIUS = 2;
+const SPAWN_RADIUS_MIN = 30;
+const SPAWN_RADIUS_MAX = 60;
 
-function LightRays() {
-  const pointsRef = useRef();
+function getRandomPosition() {
+  const angle = Math.random() * Math.PI * 2;
+  const radius = THREE.MathUtils.randFloat(SPAWN_RADIUS_MIN, SPAWN_RADIUS_MAX);
+  const height = THREE.MathUtils.randFloatSpread(30);
+  const x = Math.cos(angle) * radius;
+  const y = height;
+  const z = Math.sin(angle) * radius;
+  return new THREE.Vector3(x, y, z);
+}
 
-  // Initial positions (randomly distributed on a sphere)
-  const initialPositions = useMemo(() => {
-    const positions = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      const theta = Math.acos(THREE.MathUtils.randFloatSpread(2));
-      const phi = THREE.MathUtils.randFloatSpread(2 * Math.PI);
-      const r = distance; // Start at a fixed distance
+function LightRays({ active }) {
+  const meshRef = useRef();
+  const positions = useMemo(() => Array.from({ length: STAR_COUNT }, getRandomPosition), []);
+  const velocities = useRef([]);
+  const speeds = useRef([]);
 
-      positions[i * 3] = r * Math.sin(theta) * Math.cos(phi);
-      positions[i * 3 + 1] = r * Math.sin(theta) * Math.sin(phi);
-      positions[i * 3 + 2] = r * Math.cos(theta);
-    }
-    return positions;
-  }, []);
+  useEffect(() => {
+    velocities.current = positions.map(() => new THREE.Vector3());
+    speeds.current = positions.map(() => THREE.MathUtils.randFloat(0.5, 1.5)); // vary per star
+  }, [positions]);
 
-useFrame((state, delta) => {
-  if (pointsRef.current) {
-    const positions = pointsRef.current.geometry.attributes.position.array;
-    const respawnThreshold = 2.5; // bigger than blackHoleRadius
-    const pullStrength = 5; // slower pull speed for smooth flow
-    const minRespawnRadius = distance;       // e.g. 60
-    const maxRespawnRadius = distance * 1.5; // e.g. 90
+  useFrame((_, delta) => {
+    if (!active || !meshRef.current) return;
 
-    for (let i = 0; i < count; i++) {
-      const idx = i * 3;
-      const x = positions[idx];
-      const y = positions[idx + 1];
-      const z = positions[idx + 2];
+    const mesh = meshRef.current;
+    const temp = new THREE.Object3D();
 
-      const dist = Math.sqrt(x * x + y * y + z * z);
+    for (let i = 0; i < STAR_COUNT; i++) {
+      const pos = positions[i];
+      const vel = velocities.current[i];
+      const speed = speeds.current[i];
 
-      if (dist < respawnThreshold) {
-        // Respawn *before* they hit the black hole, so no gaps
-        const theta = Math.acos(THREE.MathUtils.randFloatSpread(2));
-        const phi = THREE.MathUtils.randFloat(0, 2 * Math.PI);
-        const r = THREE.MathUtils.randFloat(minRespawnRadius, maxRespawnRadius);
+      // Pull toward center with individualized speed
+      const dir = pos.clone().normalize().multiplyScalar(-1);
+      vel.addScaledVector(dir, delta * speed);
+      pos.addScaledVector(vel, delta);
 
-        positions[idx] = r * Math.sin(theta) * Math.cos(phi);
-        positions[idx + 1] = r * Math.sin(theta) * Math.sin(phi);
-        positions[idx + 2] = r * Math.cos(theta);
-      } else {
-        // Pull stars toward black hole slowly for smooth flow
-        const pullFactor = pullStrength * delta / dist;
-        positions[idx] -= x * pullFactor;
-        positions[idx + 1] -= y * pullFactor;
-        positions[idx + 2] -= z * pullFactor;
+      // Optional swirl for subtle spiral
+      const swirlAmount = 0.01 * speed;
+      const angle = Math.atan2(pos.z, pos.x);
+      pos.x += Math.cos(angle + Math.PI / 2) * swirlAmount * delta;
+      pos.z += Math.sin(angle + Math.PI / 2) * swirlAmount * delta;
+
+      // If swallowed, respawn
+      if (pos.length() < DEATH_RADIUS) {
+        positions[i] = getRandomPosition();
+        velocities.current[i].set(0, 0, 0);
+        speeds.current[i] = THREE.MathUtils.randFloat(0.5, 1.5);
       }
+
+      temp.position.copy(positions[i]);
+      temp.scale.setScalar(0.2);
+      temp.updateMatrix();
+      mesh.setMatrixAt(i, temp.matrix);
     }
 
-    pointsRef.current.geometry.attributes.position.needsUpdate = true;
-  }
-});
-
-
-
+    mesh.instanceMatrix.needsUpdate = true;
+  });
 
   return (
-    <points ref={pointsRef}>
-      <bufferGeometry attach="geometry">
-        <bufferAttribute
-          attach="attributes-position"
-          count={count}
-          array={initialPositions}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-         attach="material"
-         size={0.05}
-         color="#00ffff"
-         sizeAttenuation={true}
-         transparent={true}
-         opacity={0.7}
-         blending={THREE.AdditiveBlending}
-       />
-    </points>
+    <instancedMesh ref={meshRef} args={[null, null, STAR_COUNT]}>
+      <sphereGeometry args={[0.1, 6, 6]} />
+      <meshBasicMaterial color="white" />
+    </instancedMesh>
   );
 }
 

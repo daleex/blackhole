@@ -30,7 +30,7 @@ function Scene({ distance }) {
       </mesh>
 
       {/* Render LightRays only if distance <= threshold, e.g. 200 */}
-      {distance <= 20 && <LightRays />}
+      <LightRays active={distance <= 20} />
 
       <Stars radius={0} depth={300} count={10000} factor={4} saturation={0} fade speed={1} />
     </>
