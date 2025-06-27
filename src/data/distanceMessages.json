@@ -1,8 +1,8 @@
 [
-  { "min": 900, "max": 1000, "text": "Attenzione", "class": "center" },
-  { "min": 900, "max": 1000, "text": "Scorri un po’, ti garantisco che ne vale la pena!", "class": "bottom-center" },
-  { "min": 850, "max": 879, "text": "Stai per assistere alla morte di una stella.Il suo destino cambierà lo spazio attorno a sé per sempre.", "class": "center" },
-  { "min": 800, "max": 829, "text": "Inizia ora il viaggio verso l'ignoto.", "class": "center" },
+  { "min": 970, "max": 1000, "text": "Attenzione", "class": "center" },
+  { "min": 970, "max": 1000, "text": "Scorri un po’, ti garantisco che ne vale la pena!", "class": "bottom-center" },
+  { "min": 900, "max": 950, "text": "Stai per assistere alla morte di una stella.Il suo destino cambierà lo spazio attorno a sé per sempre.", "class": "center" },
+  { "min": 850, "max": 870, "text": "Inizia ora il viaggio verso l'ignoto.", "class": "center" },
   { "min": 800, "max": 829, "text": "Scorri per continuare l’avventura.", "class": "center" },
   { "min": 750, "max": 779, "text": "Immagina una stella molto, molto grande, almeno venti volte più grande del nostro Sole. Dopo tanto tempo, anche questa stella arriva alla fine della sua vita.", "class": "bottom-left", "image": "/blackhole/images/noun-star-5951975.svg", "imagePosition": "left" },
   { "min": 700, "max": 729, "text": "La stella ha consumato tutto il carburante che la faceva brillare e stare calda. Senza quel carburante, la gravità inizia a vincere e il centro della stella comincia a schiacciarsi sempre di più.", "class": "bottom-left", "image": "/blackhole/images/noun-supernova-5951976.svg", "imagePosition": "left" },

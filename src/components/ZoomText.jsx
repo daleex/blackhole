@@ -56,7 +56,7 @@ function ZoomText({ distance, setDistance, setCtaActive }) {
     <>
       {instruction && (
         <div className="scroll-instruction">
-          <TypewriterText text={instruction} speed={20} />
+          <TypewriterText text={instruction} speed={10} />
         </div>
       )}
 
@@ -66,7 +66,7 @@ function ZoomText({ distance, setDistance, setCtaActive }) {
             {imageSrc && (imagePosition === 'top' || imagePosition === 'left') && (
               <img src={imageSrc} alt="" className="message-image" />
             )}
-            <TypewriterText text={mainMessage} speed={15} />
+            <TypewriterText text={mainMessage} speed={10} />
             {imageSrc && (imagePosition === 'bottom' || imagePosition === 'right') && (
               <img src={imageSrc} alt="" className="message-image" />
             )}
@@ -76,7 +76,7 @@ function ZoomText({ distance, setDistance, setCtaActive }) {
             <div className="terminal-warning">
               <TypewriterText
                 text={`>>> ATTENZIONE: siamo arrivati al "punto di non ritorno"\n>>> La forza di gravità è così intensa che nulla può sfuggire… nemmeno noi\n>>> Non potrai più tornare indietro.`}
-                speed={20}
+                speed={10}
               />
             </div>
             <div className="buttons">
