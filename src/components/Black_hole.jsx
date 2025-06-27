@@ -100,7 +100,7 @@ function ControlledOrbitControls({ distance, onDistanceChange, ctaActive }) {
 
 
       // Prevent zooming out once CTA is triggered
-      const closeThreshold = 100;
+      const closeThreshold = 19;
       if (targetDistanceRef.current <= closeThreshold && zoomDelta > 0) {
         zoomDelta = 0;
       }
@@ -197,7 +197,7 @@ function Black_hole() {
       } else {
         // Intensity: from 0 (far) to 1 (close)
         const intensity = 1 - Math.min(Math.max((distance - 1) / (threshold - 1), 0), 1);
-        const maxShake = 0.5; // pixels
+        const maxShake = 0.7; // pixels
         const shakeStrength = intensity * maxShake;
 
         // Oscillate using sin and cos for smooth wiggle
