@@ -59,7 +59,7 @@
   border-radius: 12px;
   font-size: 1.1rem;
   z-index: 999;
-  text-align: center;
+  text-align: left;
 }
 
 .instruction-banner {
@@ -196,7 +196,7 @@
     top: 20px !important;
     bottom: auto !important;
     transform: translateX(-50%) !important;
-    text-align: center !important;
+    text-align: left !important;
     width: 90%;
     max-width: 100%;
   }
@@ -206,7 +206,7 @@
     left: 50% !important;
     bottom: 50% !important;
     transform: translate(-50%, 50%) !important;
-    text-align: center !important;
+    text-align: left !important;
     width: 90%;
     max-width: 100%;
   }
