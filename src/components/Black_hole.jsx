@@ -160,7 +160,7 @@ function ControlledOrbitControls({ distance, onDistanceChange, ctaActive }) {
 
 
     return (
-      <OrbitControls
+    <OrbitControls
       ref={controlsRef}
       zoomSpeed={zoomSpeed}
       enableRotate={!isMobile}
@@ -168,6 +168,10 @@ function ControlledOrbitControls({ distance, onDistanceChange, ctaActive }) {
       enableZoom={!isMobile}
       minDistance={isLockedZoom ? distance : 1}
       maxDistance={isLockedZoom ? distance : maxAllowedDistance}
+      touches={{
+        ONE: isMobile ? THREE.TOUCH.NONE : THREE.TOUCH.ROTATE,
+        TWO: isMobile ? THREE.TOUCH.NONE : THREE.TOUCH.DOLLY,
+      }}
     />
     );
 
